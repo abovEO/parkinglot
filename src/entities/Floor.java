@@ -4,14 +4,15 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Floor {
     private final String id;
     private final Map<String, Spot> spots;
 
-    public Floor(String id, Map<String, Spot> spots) {
+    public Floor(String id) {
         this.id = id;
-        this.spots = spots;
+        this.spots = new ConcurrentHashMap<>();
     }
 
     public String getId() {
@@ -22,8 +23,8 @@ public class Floor {
         return spots;
     }
 
-    public void addSpots(String id, Spot spot) {
-        this.spots.put(id, spot);
+    public void addSpots( Spot spot) {
+        this.spots.put(spot.getId(), spot);
     }
 
     public synchronized Optional<Spot> findAvailableSpot(Vehicle vehicle) {
