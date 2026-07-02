@@ -39,8 +39,27 @@ public class ParkingLot {
         this.parkingStrategy = parkingStrategy;
     }
 
-    public Optional<Spot> parkVehicle(Vehicle vehicle){
+    public Optional<Ticket> parkVehicle(Vehicle vehicle){
         Optional<Spot> availableSpot = parkingStrategy.findSpot(floors,vehicle);
+        if (availableSpot.isPresent()){
+            Spot spot = availableSpot.get();
+            spot.parkVehicle(vehicle);
+            System.out.println("Parking vehicle " + vehicle.getLicenseNumber());
+            Ticket ticket = new Ticket(vehicle, spot);
+            availableTickets.put(vehicle.getLicenseNumber(), ticket);
+            return Optional.of(ticket);
+        }
+        return Optional.empty();
+    }
+
+    public Optional<Double> unparkVehicle(String licenceNumber){
+        Ticket ticket = availableTickets.get(licenceNumber);
+        if (ticket != null){
+            System.out.println("Unparking vehicle " + licenceNumber);
+            ticket.setExitTimestamp();
+            ticket.getSpot().unparkVehicle();;
+        }
+        System.out.println("Ticket not found");
         return Optional.empty();
     }
 }
