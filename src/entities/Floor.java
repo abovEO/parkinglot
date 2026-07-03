@@ -23,17 +23,21 @@ public class Floor {
         return spots;
     }
 
-    public void addSpots( Spot spot) {
+    public void addSpots(Spot spot) {
         this.spots.put(spot.getId(), spot);
     }
 
     public synchronized Optional<Spot> findAvailableSpot(Vehicle vehicle) {
-        return spots.values().stream().filter(spot -> !spot.isAvailable() && spot.canFitVehicle(vehicle)).min(Comparator.comparing(Spot::getSpotSize));
+//        System.out.println("find spot for " + vehicle.getLicenseNumber());
+        return spots.values().stream()
+                .filter(spot -> spot.isAvailable() && spot.canFitVehicle(vehicle))
+                .sorted(Comparator.comparing(Spot::getSpotSize))
+                .findFirst();
     }
 
-    public void displayAvailability(){
-        for (Map.Entry<String , Spot> spot : spots.entrySet()){
-            if (spot.getValue().isAvailable()){
+    public void displayAvailability() {
+        for (Map.Entry<String, Spot> spot : spots.entrySet()) {
+            if (spot.getValue().isAvailable()) {
                 System.out.println(spot.getKey() + " is available for size: " + spot.getValue().getSpotSize());
             }
         }

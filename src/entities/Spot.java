@@ -27,10 +27,6 @@ public class Spot {
         return spotSize;
     }
 
-    public Vehicle getParkedVehicle() {
-        return parkedVehicle;
-    }
-
     public void parkVehicle(Vehicle parkedVehicle) {
         this.parkedVehicle = parkedVehicle;
         this.isOccupied = true;
@@ -39,10 +35,6 @@ public class Spot {
     public void unparkVehicle() {
         this.parkedVehicle = null;
         this.isOccupied = false;
-    }
-
-    public void setOccupied(boolean occupied) {
-        this.isOccupied = occupied;
     }
 
     public boolean canFitVehicle(Vehicle vehicle) {
